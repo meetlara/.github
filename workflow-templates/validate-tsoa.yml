@@ -14,5 +14,6 @@ jobs:
       - name: Run TSOA build
         working-directory: ./back
         run: |
+          yarn install
           yarn build-tsoa
           git diff --exit-code || (echo "❌ ERROR: TSOA routes are not up to date. Please run 'yarn build-tsoa' and commit the changes." && exit 1)
