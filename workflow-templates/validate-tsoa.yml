@@ -1,0 +1,45 @@
+name: Validate TSOA
+
+on: [pull_request]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
+    # Set job outputs to values from filter step
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+    steps:
+      # For pull requests it's not necessary to checkout the code
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'back/**'
+              - 'db/**'
+
+  build:
+    name: "Validate TSOA"
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      EXCLUDED_REPOS: "meetlara/airflow meetlara/clerk-service meetlara/backoffice-service" 
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run TSOA build
+        working-directory: ./back
+        run: |
+          yarn install
+          yarn build-tsoa
+          git diff --exit-code || (echo "❌ ERROR: TSOA routes are not up to date. Please run 'yarn build-tsoa' and commit the changes." && exit 1)
