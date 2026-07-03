@@ -19,10 +19,10 @@
      If not tested, say so and why. -->
 
 ## Linear
-<!-- Also auto-links via the branch name (eng-123-...). Use "Closes ENG-123" to move the
-     issue to Done on merge, or "Ref ENG-123" to link WITHOUT closing (e.g. one of several
-     PRs on the same issue). -->
-Closes ENG-
+<!-- Also auto-links via the branch name (lara-123-...). Use "Closes LARA-123" to move the
+     issue to Done on merge, or "Ref LARA-123" to link WITHOUT closing (e.g. one of several
+     PRs on the same issue). Any team prefix works (LARA-, etc.). -->
+Closes LARA-
 
 <!-- ─────────────────────────────────────────────────────────────────────
      CONDITIONAL SECTIONS — Claude: promote out of this comment ONLY the ones
